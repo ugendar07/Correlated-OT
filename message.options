@@ -1,0 +1,4 @@
+ClientMessage.command     max_size:64
+ClientMessage.payload     max_size:64
+ServerResponse.status     max_size:64
+ServerResponse.payload    max_size:64

@@ -1,0 +1,12 @@
+// message.proto
+syntax = "proto3";
+
+message ClientMessage {
+  string command = 1;
+  bytes payload = 2;
+}
+
+message ServerResponse {
+  string status = 1;
+  bytes payload = 2;
+}
