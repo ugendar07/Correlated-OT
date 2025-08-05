@@ -63,6 +63,79 @@ Where:
 ---
 
 
+## Prerequisites
+
+### Server (C++)
+- C++17+
+- Asio
+- NanoPB
+- Trezor Crypto
+
+### Client (Node.js)
+- Node.js (v18+)
+- TypeScript
+- `protobufjs`, `noble-secp256k1`, `@noble/hashes`
+
+---
+
+## COT Calculations 
+
+### Message Construction (Server)
+For each bit `i`:
+    Ui = H(Ri) // first byte of ECDH hash
+    m0 = Ui
+    m1 = Ui + x
+
+    mc = Ui + yi ∗ x
+
+    c0[i] = m0
+    c1[i] = m1
+
+
+###Alice’s share:
+    U = - ∑ (2^i * Ui)
+
+### Message Processing (Client)
+Bob computes:
+    mcᵢ = mᵢ - H(Rᵢ)
+
+computes 
+    V = ∑ (2^i * mcᵢ)
+
+---
+
+## Running the Project
+
+### 1. Compile the Server
+
+Make sure Boost, NanoPB, and Trezor Crypto are included properly. Use `CMakeLists.txt` or compile manually:
+
+generate message.ph.h and message.pb.c and move them to include and src respectively 
+```bash
+    python3 path=/nanopb/generator/nanopb_generator.py message.proto
+```
+
+Compile and Run
+```bash
+    cmake -G "MinGW Makefiles" ..
+    cmake --build .
+    ./COTServer
+
+```
+
+### 1. Compile the Client
+
+generate message.js and message.d.ts and move them to generated
+```bash
+    pbjs -t static-module -w commonjs -o message.js message.proto
+    pbts -o message.d.ts message.js
+```
+Run
+```bash
+    npx ts-node .\src\cot_client.ts
+```
+
+
 
 
 
